@@ -705,8 +705,8 @@ public final class MyAzure {
         this.networkManager20171001 = com.microsoft.azure.management.network.v2017_10_01.implementation.NetworkManager.authenticate(restClient, subscriptionId);
         this.dnsManager20160401 = com.microsoft.azure.management.dns.v2016_04_01.implementation.NetworkManager.authenticate(restClient, subscriptionId);
         this.storageManager20160101 = com.microsoft.azure.management.storage.v2016_01_01.implementation.StorageManager.authenticate(restClient, subscriptionId);
-        this.appServiceManager20160301 = com.microsoft.azure.management.appservice.v2016_03_01.implementation.AppServiceManager.authenticate(restClient, subscriptionId);
-        this.appServiceManager20160801 = com.microsoft.azure.management.appservice.v2016_08_01.implementation.AppServiceManager.authenticate(restClient, subscriptionId);
-        this.appServiceManager20160901 = com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppServiceManager.authenticate(restClient, subscriptionId);
+        // this.appServiceManager20160301 = com.microsoft.azure.management.appservice.v2016_03_01.implementation.AppServiceManager.authenticate(restClient, subscriptionId);
+        // this.appServiceManager20160801 = com.microsoft.azure.management.appservice.v2016_08_01.implementation.AppServiceManager.authenticate(restClient, subscriptionId);
+        // this.appServiceManager20160901 = com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppServiceManager.authenticate(restClient, subscriptionId);
     }
 }
