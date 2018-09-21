@@ -15,6 +15,7 @@ import com.microsoft.azure.management.network.ServiceEndpointType;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.v2018_02_01.implementation.ResourceGroupInner;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountEncryptionStatus;
 import com.microsoft.azure.management.storage.StorageService;
@@ -34,6 +35,15 @@ public final class Utils {
         info.append("Resource Group: ").append(resource.id())
                 .append("\n\tName: ").append(resource.name())
                 .append("\n\tRegion: ").append(resource.region())
+                .append("\n\tTags: ").append(resource.tags());
+        System.out.println(info.toString());
+    }
+
+    public static void print(ResourceGroupInner resource) {
+        StringBuilder info = new StringBuilder();
+        info.append("Resource Group: ").append(resource.id())
+                .append("\n\tName: ").append(resource.name())
+                .append("\n\tRegion: ").append(resource.location())
                 .append("\n\tTags: ").append(resource.tags());
         System.out.println(info.toString());
     }
