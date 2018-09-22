@@ -59,16 +59,14 @@ public class DemoController {
     }
 
     @GetMapping("/result")
-    public String push(@RequestParam(name = "vmname", required = true) String vmname, Model model,
-            @RequestParam(name = "azrgname", required = true) String azrgname,
-            @RequestParam(name = "azsrgname", required = true) String azsrgname,
-            @RequestParam(name = "saname", required = true) String saname) throws CloudException, IOException {
+    public String push(
+            Model model,
+            @RequestParam(name = "azsaname", required = true) String azureStorageName,
+            @RequestParam(name = "azrgname", required = true) String azureRgName,
+            @RequestParam(name = "azsrgname", required = true) String azsRgName,
+            @RequestParam(name = "saname", required = true) String azsStorageNname) throws CloudException, IOException {
 
-        model.addAttribute("vmname", vmname);
-        model.addAttribute("azrgname", azrgname);
-        model.addAttribute("azsrgname", azsrgname);
-        model.addAttribute("saname", saname);
-
+        
         final String armEndpoint = "https://management.local.azurestack.external/";
         final String location = "local";
 
@@ -118,8 +116,12 @@ public class DemoController {
         // Get 2 random names for Azure Stack if not provided
         String rgName = SdkContext.randomResourceName("rg", 20);
         String saName = SdkContext.randomResourceName("sa", 20);
-        if (azsrgname != "") {
-            rgName = azsrgname;
+        if (azsRgName != "") {
+            rgName = azsRgName;
+        }
+        if (azsStorageNname != "")
+        {
+            saName = azsStorageNname;
         }
 
         // Create a resource group in Azure Stack
@@ -127,9 +129,19 @@ public class DemoController {
 
         // Create a RG in Azure
         String rgName_Azure = SdkContext.randomResourceName("rg", 20);
-        if (azrgname != "") {
-            rgName_Azure = azrgname;
+        String saName_Azure = SdkContext.randomResourceName("sa", 20);
+        if (azureRgName != "") {
+            rgName_Azure = azureRgName;
         }
+        if (azureStorageName != "")
+        {
+           saName_Azure = azureStorageName;
+        }
+
+        model.addAttribute("azsaname", saName_Azure);
+        model.addAttribute("azrgname", rgName_Azure);
+        model.addAttribute("azsrgname", rgName);
+        model.addAttribute("saname", saName);
 
         ResourceGroup rg_Azure = createResourceGroup(Region.US_WEST.name(), publicAzure, rgName_Azure);
 
@@ -143,7 +155,7 @@ public class DemoController {
                 .doOnNext(k -> System.out.println("\t" + k.keyName() + ": " + k.value())).toBlocking().subscribe();
 
         // Create a storage account in the resource group in Public Azure
-        StorageAccount storageAccount_azure = createStorageAccount(Region.US_WEST.name(), publicAzure, rgName_Azure, saName);
+        StorageAccount storageAccount_azure = createStorageAccount(Region.US_WEST.name(), publicAzure, rgName_Azure, saName_Azure);
 
         // List Resource Groups in Azure Stack
         List<ResourceGroupInner> stackGroups = azureStack.resourceGroups().inner().list();
@@ -171,7 +183,7 @@ public class DemoController {
         return "greeting";
     }
 
-	private StorageAccount createStorageAccount(final String location, MyAzure azureCloud, String rgName, String saName) {
+    private StorageAccount createStorageAccount(final String location, MyAzure azureCloud, String rgName, String saName) {
         StorageAccount storageAccount = azureCloud.storageAccounts().define(saName).withRegion(location)
                 .withExistingResourceGroup(rgName).withKind(Kind.STORAGE)
                 .withSku(new Sku().withName(SkuName.STANDARD_LRS)).create();
