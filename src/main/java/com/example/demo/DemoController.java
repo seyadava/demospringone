@@ -168,7 +168,7 @@ public class DemoController {
         // Delete Rg created in Azure Stack
         azureStack.resourceGroups().inner().delete(rgName);
 
-        return "greeting";
+        return "creating";
     }
 
 	private StorageAccount createStorageAccount(final String location, MyAzure azureCloud, String rgName, String saName) {
